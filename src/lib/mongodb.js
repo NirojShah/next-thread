@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const MONGODB_URI = "mongodb://192.168.30.106:27017/todo-next";
+const MONGODB_URI = "mongodb://localhost:27017/threads";
 
 let cached = global.mongoose;
 

@@ -6,7 +6,7 @@ export async function PostThread({ uploadedBy, plainText, html }) {
     const thread = new Thread({
       uploadedBy,
       plainText,
-      html
+      html,
     });
     const savedThread = await thread.save();
     return savedThread; // You may return savedThread._id or anything else
@@ -15,18 +15,34 @@ export async function PostThread({ uploadedBy, plainText, html }) {
   }
 }
 
-export async function GetPosts(){
-
+export async function GetPosts({
+  page = 1,
+  limit = 10,
+  filter = {},
+  sort = { createdAt: -1 },
+}) {
+  try {
+    const skip = (page - 1) * limit;
+    const posts = await Thread.find(filter)
+      .sort(sort)
+      .skip(skip)
+      .limit(limit)
+      .exec();
+    const total = await Thread.countDocuments(filter);
+    return {
+      data: posts,
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit),
+    };
+  } catch (error) {
+    throw error;
+  }
 }
 
-export async function MyPosts(){
+export async function MyPosts() {}
 
-}
+export async function DeletePost() {}
 
-export async function DeletePost(){
-
-}
-
-export async function Search() {
-    
-}
+export async function Search() {}

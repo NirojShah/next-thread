@@ -43,6 +43,14 @@ export async function GetPosts({
 
 export async function MyPosts() {}
 
-export async function DeletePost() {}
+export async function DeletePost({ _id }) {
+  try {
+    const deleted = await Thread.findByIdAndDelete(_id);
+    return deleted; // null if post not found, document if deleted
+  } catch (error) {
+    throw error;
+  }
+}
+
 
 export async function Search() {}

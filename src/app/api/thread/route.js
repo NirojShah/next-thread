@@ -17,9 +17,28 @@ export async function POST(req) {
 }
 
 
-export async function GET(req){
+export async function GET(req) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const uploadedBy = searchParams.get("uploadedBy");
+    const query = searchParams.get("query");
 
+    let threads;
+
+    if (uploadedBy) {
+      threads = await MyPosts({ uploadedBy });
+    } else if (query) {
+      threads = await Search({ query });
+    } else {
+      threads = await Thread.find({}).populate("uploadedBy").lean();
+    }
+
+    return NextResponse.json({ success: true, threads });
+  } catch (error) {
+    return NextResponse.json({ success: false, error: error.message }, { status: 400 });
+  }
 }
+
 
 export async function DELETE(req){
 

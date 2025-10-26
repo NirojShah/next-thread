@@ -41,12 +41,15 @@ export async function GetPosts({
   }
 }
 
-export async function MyPosts() {}
+export async function MyPosts({ uploadedBy }) {
+  const posts = await Thread.find({ uploadedBy }).populate("uploadedBy").lean();
+  return posts;
+}
 
 export async function DeletePost({ _id }) {
   try {
     const deleted = await Thread.findByIdAndDelete(_id);
-    return deleted; // null if post not found, document if deleted
+    return deleted; 
   } catch (error) {
     throw error;
   }

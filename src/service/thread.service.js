@@ -56,4 +56,8 @@ export async function DeletePost({ _id }) {
 }
 
 
-export async function Search() {}
+export async function Search({ query }) {
+  const results = await Thread.find({ $text: { $search: query } }).lean();
+  return results;
+}
+

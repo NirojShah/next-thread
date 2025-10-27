@@ -35,3 +35,19 @@ export const getCommentsByThread = async ({ threadId }) => {
 
   return withReplies;
 };
+
+
+export const replyToComment = async ({ parentCommentId, commentedBy, commentText, attachments = [] }) => {
+  const parent = await Comment.findById(parentCommentId);
+  if (!parent) throw new Error("Parent comment not found.");
+
+  const reply = await Comment.create({
+    threadId: parent.threadId,
+    parentCommentId,
+    commentedBy,
+    commentText,
+    attachments
+  });
+
+  return reply;
+};

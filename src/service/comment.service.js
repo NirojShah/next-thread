@@ -51,3 +51,17 @@ export const replyToComment = async ({ parentCommentId, commentedBy, commentText
 
   return reply;
 };
+
+
+export const deleteComment = async ({ commentId, deleteReplies = true }) => {
+  const comment = await Comment.findById(commentId);
+  if (!comment) throw new Error("Comment not found.");
+
+  await Comment.findByIdAndDelete(commentId);
+
+  if (deleteReplies) {
+    await Comment.deleteMany({ parentCommentId: commentId });
+  }
+
+  return { message: "Comment deleted successfully." };
+};

@@ -15,3 +15,23 @@ export const createComment = async ({ threadId, commentedBy, commentText, parent
 
   return newComment;
 };
+
+
+export const getCommentsByThread = async ({ threadId }) => {
+  const comments = await Comment.find({ threadId, parentCommentId: null })
+    .populate("commentedBy", "name email")
+    .populate("attachments")
+    .sort({ createdAt: -1 });
+
+  const withReplies = await Promise.all(
+    comments.map(async (comment) => {
+      const replies = await Comment.find({ parentCommentId: comment._id })
+        .populate("commentedBy", "name email")
+        .populate("attachments")
+        .sort({ createdAt: 1 });
+      return { ...comment.toObject(), replies };
+    })
+  );
+
+  return withReplies;
+};

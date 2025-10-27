@@ -65,3 +65,15 @@ export const deleteComment = async ({ commentId, deleteReplies = true }) => {
 
   return { message: "Comment deleted successfully." };
 };
+
+
+
+export const updateComment = async ({ commentId, commentText }) => {
+  const comment = await Comment.findById(commentId);
+  if (!comment) throw new Error("Comment not found.");
+
+  comment.commentText = commentText;
+  await comment.save();
+
+  return comment;
+};

@@ -33,3 +33,20 @@ export async function GET(req) {
   }
 }
 
+
+export async function DELETE(req) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const commentId = searchParams.get("commentId");
+    const deleteReplies = searchParams.get("deleteReplies") !== "false"; // default true
+
+    if (!commentId) {
+      return NextResponse.json({ error: "commentId query parameter is required." }, { status: 400 });
+    }
+
+    const result = await deleteComment({ commentId, deleteReplies });
+    return NextResponse.json({ success: true, message: result.message }, { status: 200 });
+  } catch (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}

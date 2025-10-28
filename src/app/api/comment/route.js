@@ -17,3 +17,19 @@ export async function POST(req) {
   }
 }
 
+export async function GET(req) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const threadId = searchParams.get("threadId");
+
+    if (!threadId) {
+      return NextResponse.json({ error: "threadId query parameter is required." }, { status: 400 });
+    }
+
+    const comments = await getCommentsByThread({ threadId });
+    return NextResponse.json({ success: true, comments }, { status: 200 });
+  } catch (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+

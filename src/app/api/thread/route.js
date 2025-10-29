@@ -47,6 +47,27 @@ export async function GET(req) {
 }
 
 
+export async function PATCH(req) {
+  try {
+    await connectDB();
+    const body = await req.json();
+    const { _id } = body;
+
+    if (!_id) {
+      return NextResponse.json({ success: false, message: "Post ID is required" }, { status: 400 });
+    }
+
+    const deleted = await DeletePost({ _id });
+    if (!deleted) {
+      return NextResponse.json({ success: false, message: "Post not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ success: true, message: "Post deleted successfully", data: deleted });
+  } catch (error) {
+    console.error("PATCH Error:", error);
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+  }
+}
 
 
 

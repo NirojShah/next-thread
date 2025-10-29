@@ -5,15 +5,17 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
     await connectDB();
-    const session = await mongoose.startSession();
-    session.startTransaction();
+    // const session = await mongoose.startSession();
+    // session.startTransaction();
   try {
     const body = await req.json();
 
-    const resp = await CreateUser({body},session)
+    const resp = await CreateUser({body}
+      // ,session
+    )
 
     await session.commitTransaction();
-    session.endSession();
+    // session.endSession();
 
     return NextResponse.json({
         status:true,
@@ -21,8 +23,8 @@ export async function POST(req) {
     })
 
   } catch (err) {
-    await session.abortTransaction();
-    session.endSession();
+    // await session.abortTransaction();
+    // session.endSession();
 return NextResponse.json(
       { status: false, error: err.message || "Internal Server Error" },
       { status: 500 }

@@ -12,11 +12,14 @@ export async function CreateUser({
   email,
   phone,
   address,
-},session) {
+}
+// ,session
+) {
   try {
     const isPresent = await User.findOne({
       $or: [{ userName }, { phone }, { email }],
-    }).session(session);
+    })
+    // .session(session);
     if (isPresent) {
       throw new ApiError(500, "User already present.");
     }
@@ -33,7 +36,7 @@ export async function CreateUser({
           ZipCode: address.ZipCode,
         },
       ],
-      { session }
+      // { session }
     );
 
     const newUser = await User.create(
@@ -48,7 +51,7 @@ export async function CreateUser({
           address: newAddress[0]._id,
         },
       ],
-      { session }
+      // { session }
     );
     console.log(newUser)
     return newUser[0];

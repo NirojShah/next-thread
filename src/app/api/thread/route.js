@@ -5,7 +5,6 @@ import { NextResponse } from "next/server";
 export async function POST(req) {
   try {
     const body = await req.json();
-    // Expecting body: { uploadedBy, plainText, html }
     const { uploadedBy, plainText, html } = body;
 
     const savedThread = await PostThread({ uploadedBy, plainText, html });
@@ -32,7 +31,6 @@ export async function GET(req) {
       return NextResponse.json({ success: true, data: results });
     }
 
-    // 2️⃣ If "uploadedBy" param is provided — return user’s posts
     if (uploadedBy) {
       const posts = await MyPosts({ uploadedBy });
       return NextResponse.json({ success: true, data: posts });
@@ -72,5 +70,5 @@ export async function PATCH(req) {
 
 
 export async function DELETE(req){
-
+  const {id} = req.params
 }

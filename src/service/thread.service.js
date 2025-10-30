@@ -9,9 +9,9 @@ export async function PostThread({ uploadedBy, plainText, html }) {
       html,
     });
     const savedThread = await thread.save();
-    return savedThread; // You may return savedThread._id or anything else
+    return savedThread;
   } catch (error) {
-    throw error; // You may handle error differently if needed
+    throw error;
   }
 }
 

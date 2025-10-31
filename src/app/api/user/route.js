@@ -32,14 +32,14 @@ return NextResponse.json(
   }
 }
 
-export async function GET() {
+export async function GET(req) {
 
 }
 
-export async function PATCH() {
+export async function PATCH(req) {
   
 }
 
-export async function DELETE(){
-  
+export async function DELETE(req){
+
 }

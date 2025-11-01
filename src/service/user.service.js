@@ -90,3 +90,13 @@ export async function UpdateUser(email, data) {
   }
 }
 
+export async function DeactivateUser(email){
+  try{
+    await User.findOneAndDelete({
+      email
+    })
+    return true;
+  }catch(err){
+    throw new Error(err)
+  }
+}

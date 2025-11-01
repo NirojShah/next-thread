@@ -74,3 +74,19 @@ export async function UserInfo(email) {
   }
 }
 
+export async function UpdateUser(email, data) {
+  try {
+    console.log(data)
+    const updateUser = await User.findOneAndUpdate(
+      { email },
+      { $set: data },
+      {
+        new: true
+      }
+    ).exec();
+    return updateUser;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+}
+

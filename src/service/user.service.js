@@ -60,3 +60,17 @@ export async function AllUsers() {
     throw new Error(err.message);
   }
 }
+
+
+export async function UserInfo(email) {
+  try {
+    const userInfo = await User.findOne({ email })
+      .select("-id -password")
+      .populate("address")
+      .select("-_id");
+    return userInfo;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+}
+

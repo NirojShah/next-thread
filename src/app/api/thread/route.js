@@ -1,24 +1,34 @@
+import { connectDB } from "@/lib/mongodb";
 import { Thread, ThreadContent } from "@/models/thread.model";
-import { PostThread } from "@/service/thread.service";
+import { GetPosts, PostThread } from "@/service/thread.service";
+import AuthenticateUser from "@/utility/auth-middleware";
+import formidable from "formidable";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
-    const body = await req.json();
-    const { uploadedBy, plainText, html } = body;
+    await connectDB();
+    const form = formidable({ multiples: false });
+
+    const fields = await form
+    let files
+
+    console.log(fields)
+    const { uploadedBy, plainText, html } = fields; // 🔥 Extract text fields
+    console.log({ uploadedBy, plainText, html, files });
 
     const savedThread = await PostThread({ uploadedBy, plainText, html });
 
     return NextResponse.json({ success: true, thread: savedThread });
   } catch (error) {
+    console.log(error);
     return NextResponse.json({ success: false, error: error.message }, { status: 400 });
   }
 }
-
-
 export async function GET(req) {
   try {
     await connectDB();
+    // const resp = await AuthenticateUser(req)
     const { searchParams } = new URL(req.url);
 
     const page = Number(searchParams.get("page")) || 1;
@@ -40,10 +50,12 @@ export async function GET(req) {
     return NextResponse.json({ success: true, ...response });
   } catch (error) {
     console.error("GET Error:", error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: error.message },
+      { status: 500 }
+    );
   }
 }
-
 
 export async function PATCH(req) {
   try {
@@ -52,23 +64,34 @@ export async function PATCH(req) {
     const { _id } = body;
 
     if (!_id) {
-      return NextResponse.json({ success: false, message: "Post ID is required" }, { status: 400 });
+      return NextResponse.json(
+        { success: false, message: "Post ID is required" },
+        { status: 400 }
+      );
     }
 
     const deleted = await DeletePost({ _id });
     if (!deleted) {
-      return NextResponse.json({ success: false, message: "Post not found" }, { status: 404 });
+      return NextResponse.json(
+        { success: false, message: "Post not found" },
+        { status: 404 }
+      );
     }
 
-    return NextResponse.json({ success: true, message: "Post deleted successfully", data: deleted });
+    return NextResponse.json({
+      success: true,
+      message: "Post deleted successfully",
+      data: deleted,
+    });
   } catch (error) {
     console.error("PATCH Error:", error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: error.message },
+      { status: 500 }
+    );
   }
 }
 
-
-
-export async function DELETE(req){
-  const {id} = req.params
+export async function DELETE(req) {
+  const { id } = req.params;
 }

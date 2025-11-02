@@ -2,8 +2,6 @@ import { connectDB } from "@/lib/mongodb";
 import { User, Address } from "../models/user.model";
 import { ApiError } from "next/dist/server/api-utils";
 
-
-
 export async function CreateUser({
   userName,
   firstName,
@@ -12,52 +10,93 @@ export async function CreateUser({
   email,
   phone,
   address,
-}
-// ,session
-) {
+}) {
   try {
     const isPresent = await User.findOne({
       $or: [{ userName }, { phone }, { email }],
-    })
-    // .session(session);
+    });
     if (isPresent) {
       throw new ApiError(500, "User already present.");
     }
+    const newAddress = await new Address({
+      houseNo: address.houseNo,
+      street: address.street,
+      addressLine: address.addressLine,
+      city: address.city,
+      state: address.state,
+      country: address.country,
+      ZipCode: address.ZipCode,
+    });
+    let newUser;
+    if (newAddress) {
+      newUser = await new User({
+        userName,
+        firstName,
+        lastName,
+        password,
+        email,
+        phone,
+        address: newAddress._id,
+      });
+      await newUser.save();
+    }
 
-    const newAddress = await Address.create(
-      [
-        {
-          houseNo: address.houseNo,
-          street: address.street,
-          addressLine: address.addressLine,
-          city: address.city,
-          state: address.state,
-          country: address.country,
-          ZipCode: address.ZipCode,
-        },
-      ],
-      // { session }
-    );
+    if (newUser) {
+      await newAddress.save();
+    }
 
-    const newUser = await User.create(
-      [
-        {
-          userName,
-          firstName,
-          lastName,
-          password,
-          email,
-          phone,
-          address: newAddress[0]._id,
-        },
-      ],
-      // { session }
-    );
-    console.log(newUser)
-    return newUser[0];
-
-
+    return newUser;
   } catch (error) {
     throw error;
+  }
+}
+
+export async function AllUsers() {
+  try {
+    const allUsers = await User.find().select("-password -address -phone -_id");
+    console.log(allUsers);
+    return allUsers;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+}
+
+
+export async function UserInfo(email) {
+  try {
+    const userInfo = await User.findOne({ email })
+      .select("-id -password")
+      .populate("address")
+      .select("-_id");
+    return userInfo;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+}
+
+export async function UpdateUser(email, data) {
+  try {
+    console.log(data)
+    const updateUser = await User.findOneAndUpdate(
+      { email },
+      { $set: data },
+      {
+        new: true
+      }
+    ).exec();
+    return updateUser;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+}
+
+export async function DeactivateUser(email){
+  try{
+    await User.findOneAndDelete({
+      email
+    })
+    return true;
+  }catch(err){
+    throw new Error(err)
   }
 }

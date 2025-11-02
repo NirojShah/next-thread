@@ -35,7 +35,7 @@ const UserSchema = new Schema({
   },
   address: {
     type: Schema.ObjectId,
-    ref: "Address",
+    ref: "Addresses",
   },
   password: {
     type: String,

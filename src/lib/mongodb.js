@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const MONGODB_URI = "mongodb://localhost:27017/threads";
+const MONGODB_URI = process.env.MONGO_DB
 
 let cached = global.mongoose;
 

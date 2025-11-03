@@ -11,6 +11,10 @@ const ThreadSchema = new Schema({
   },
   html: {
     type: String
+  },
+  file:{
+    type: Schema.Types.ObjectId,
+    ref: "Thread"
   }
 });
 

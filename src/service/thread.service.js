@@ -1,14 +1,23 @@
-import { Thread } from "@/models/thread.model";
+import { Thread, ThreadContent } from "@/models/thread.model";
 import { NextResponse } from "next/server";
 
 export async function PostThread({ uploadedBy, plainText, html }) {
   try {
+
+    console.log(uploadedBy)
     const thread = new Thread({
       uploadedBy,
       plainText,
       html,
     });
-    const savedThread = await thread.save();
+
+    const fileUpload = await new ThreadContent({
+
+    })
+
+    throw new Error("testing")
+    // const savedThread = await thread.save();
+    const savedThread=100
     return savedThread;
   } catch (error) {
     throw error;

@@ -3,21 +3,18 @@ import { NextResponse } from "next/server";
 
 export async function PostThread({ uploadedBy, plainText, html }) {
   try {
-
-    console.log(uploadedBy)
+    console.log(uploadedBy, plainText, html);
     const thread = new Thread({
       uploadedBy,
       plainText,
       html,
     });
 
-    const fileUpload = await new ThreadContent({
+    const fileUpload = await new ThreadContent({});
 
-    })
-
-    throw new Error("testing")
+    throw new Error("testing");
     // const savedThread = await thread.save();
-    const savedThread=100
+    const savedThread = 100;
     return savedThread;
   } catch (error) {
     throw error;
@@ -51,22 +48,20 @@ export async function GetPosts({
 }
 
 export async function MyPosts({ uploadedBy }) {
-  const posts = await Thread.find({ uploadedBy }).populate("uploadedBy").lean();
-  return posts;
+  const posts = await Thread.find({ uploadedBy }).populate("uploadedBy").lean();
+  return posts;
 }
 
 export async function DeletePost({ _id }) {
   try {
     const deleted = await Thread.findByIdAndDelete(_id);
-    return deleted; 
+    return deleted;
   } catch (error) {
     throw error;
   }
 }
 
-
 export async function Search({ query }) {
-  const results = await Thread.find({ $text: { $search: query } }).lean();
-  return results;
+  const results = await Thread.find({ $text: { $search: query } }).lean();
+  return results;
 }
-

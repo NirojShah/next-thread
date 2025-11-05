@@ -8,23 +8,82 @@ import { NextResponse } from "next/server";
 export async function POST(req) {
   try {
     await connectDB();
-    const form = formidable({ multiples: false });
+    
+    // ✅ Use native FormData API for App Router
+    const formData = await req.formData();
+    
+    // Extract fields
+    const uploadedBy = formData.get("uploadedBy");
+    const plainText = formData.get("plainText");
+    const html = formData.get("html");
+    const visibility = formData.get("visibility");
+    const visibleTo = formData.get("visibleTo");
+    const file = formData.get("file");
 
-    const fields = await form
-    let files
+    console.log({ uploadedBy, plainText, html, visibility });
 
-    console.log(fields)
-    const { uploadedBy, plainText, html } = fields; // 🔥 Extract text fields
-    console.log({ uploadedBy, plainText, html, files });
+    let fileContentId = null;
 
-    const savedThread = await PostThread({ uploadedBy, plainText, html });
+    // Handle file upload if present - Store as Base64 in DB
+    if (file && file.size > 0) {
+      try {
+        const bytes = await file.arrayBuffer();
+        const buffer = Buffer.from(bytes);
+        
+        // Convert to Base64
+        const base64Data = buffer.toString("base64");
+        
+        console.log("File size:", file.size, "bytes");
+        console.log("File type:", file.type);
 
-    return NextResponse.json({ success: true, thread: savedThread });
+        // Create ThreadContent document with Base64 data
+        const threadContent = await ThreadContent.create({
+          data: base64Data,
+          contentType: file.type,
+          fileName: file.name,
+        });
+
+        fileContentId = threadContent._id;
+        console.log("File stored in DB:", fileContentId);
+      } catch (fileError) {
+        console.error("Error processing file:", fileError);
+        // Continue without file if there's an error
+      }
+    }
+
+    // Create Thread document
+    const thread = new Thread({
+      uploadedBy,
+      plainText,
+      html,
+      visibility: visibility || "public",
+      visibleTo: visibleTo ? JSON.parse(visibleTo) : null,
+      file: fileContentId, // Link to ThreadContent
+    });
+
+    // const savedThread = await thread.save();
+    
+    // Populate relationships
+    await savedThread.populate("uploadedBy", "name username email");
+    if (fileContentId) {
+      await savedThread.populate("file");
+    }
+    
+    console.log("Thread created successfully:", savedThread._id);
+
+    return NextResponse.json(
+      { success: true, thread: savedThread },
+      { status: 201 }
+    );
   } catch (error) {
-    console.log(error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 400 });
+    console.error("Error creating thread:", error);
+    return NextResponse.json(
+      { success: false, error: error.message },
+      { status: 500 }
+    );
   }
 }
+
 export async function GET(req) {
   try {
     await connectDB();

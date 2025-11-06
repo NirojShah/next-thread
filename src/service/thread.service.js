@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 
 export async function PostThread({ uploadedBy, plainText, html }) {
   try {
-    console.log(uploadedBy, plainText, html);
     const thread = new Thread({
       uploadedBy,
       plainText,

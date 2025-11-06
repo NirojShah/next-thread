@@ -3,7 +3,6 @@ import { getServerSession } from "next-auth";
 
 async function AuthenticateUser(req) {
     const x = await getServerSession(authOptions)
-    console.log(x)
     return true
 }
 

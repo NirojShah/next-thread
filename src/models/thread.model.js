@@ -8,9 +8,11 @@ const ThreadSchema = new Schema({
   },
   plainText: {
     type: String
+    
   },
   html: {
     type: String
+
   },
   file:{
     type: Schema.Types.ObjectId,

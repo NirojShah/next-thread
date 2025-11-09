@@ -27,13 +27,15 @@ const ThreadContentSchema = new Schema({
   },
   contentType: {
     type: String,
-    required: [true, "ContentType is required."]
+    required: [true, "ContentType is required."],
+    enum: ['image/jpeg', 'image/png', 'application/pdf', 'text/plain'] 
   },
   fileName: {
     type: String,
-    required: [true, "FileName is required."]
+    required: [true, "FileName is required."],
+    trim: true
   }
-});
+}, { timestamps: true });
 
 const Thread = models.Thread || model("Thread", ThreadSchema);
 const ThreadContent = models.ThreadContent || model("ThreadContent", ThreadContentSchema);

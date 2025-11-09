@@ -7,16 +7,20 @@ const ThreadSchema = new Schema({
     ref: "User"
   },
   plainText: {
-    type: String
+    type: String,
+    trim: true,
+    maxlength: [5000, "Text cannot exceed 5000 characters"]
   },
   html: {
-    type: String
+    type: String,
+    trim: true
   },
-  file:{
+  file: {
     type: Schema.Types.ObjectId,
-    ref: "Thread"
+    ref: "ThreadContent"
   }
 });
+
 
 const ThreadContentSchema = new Schema({
   data: {
@@ -25,13 +29,15 @@ const ThreadContentSchema = new Schema({
   },
   contentType: {
     type: String,
-    required: [true, "ContentType is required."]
+    required: [true, "ContentType is required."],
+    enum: ['image/jpeg', 'image/png', 'application/pdf', 'text/plain'] 
   },
   fileName: {
     type: String,
-    required: [true, "FileName is required."]
+    required: [true, "FileName is required."],
+    trim: true
   }
-});
+}, { timestamps: true });
 
 const Thread = models.Thread || model("Thread", ThreadSchema);
 const ThreadContent = models.ThreadContent || model("ThreadContent", ThreadContentSchema);

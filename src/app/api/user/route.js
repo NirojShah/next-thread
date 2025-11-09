@@ -49,7 +49,6 @@ export async function PATCH(req) {
     const body = await req.json();
     const { searchParams } = new URL(req.url);
     const email = searchParams.get("email");
-    console.log(body, email);
     if (!email) {
       throw new Error("Email is required.");
     }
@@ -70,7 +69,6 @@ export async function DELETE(req) {
   try{
     const { searchParams } = new URL(req.url);
     const email = searchParams.get("email");
-    console.log(email)
     if (!email) {
       return NextResponse.json({
         success: false,

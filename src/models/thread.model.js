@@ -7,18 +7,20 @@ const ThreadSchema = new Schema({
     ref: "User"
   },
   plainText: {
-    type: String
-    
+    type: String,
+    trim: true,
+    maxlength: [5000, "Text cannot exceed 5000 characters"]
   },
   html: {
-    type: String
-
+    type: String,
+    trim: true
   },
-  file:{
+  file: {
     type: Schema.Types.ObjectId,
-    ref: "Thread"
+    ref: "ThreadContent"
   }
 });
+
 
 const ThreadContentSchema = new Schema({
   data: {

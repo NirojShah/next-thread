@@ -52,7 +52,6 @@ const UserSchema = new Schema({
   },
 });
 
-export const User = models.User || model("User", UserSchema);
 
 
 const AddressSchema = new Schema({
@@ -88,4 +87,5 @@ const AddressSchema = new Schema({
   },
 });
 
+export const User = models.User || model("User", UserSchema);
 export const Address = models.Address || model("Address", AddressSchema);

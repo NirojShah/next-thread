@@ -3,11 +3,15 @@ import { Thread, ThreadContent } from "@/models/thread.model";
 import { GetPosts, PostThread } from "@/service/thread.service";
 import AuthenticateUser from "@/utility/auth-middleware";
 import formidable from "formidable";
+import { SessionContext } from "next-auth/react";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
     await connectDB();
+
+    const x = await SessionContext()
+    console.log(x)
     
     // ✅ Use native FormData API for App Router
     const formData = await req.formData();
@@ -20,7 +24,7 @@ export async function POST(req) {
     const visibleTo = formData.get("visibleTo");
     const file = formData.get("file");
 
-    console.log({ uploadedBy, plainText, html, visibility });
+    console.log({ uploadedBy, plainText, html, visibility,file });
 
     let fileContentId = null;
 
@@ -50,6 +54,8 @@ export async function POST(req) {
         // Continue without file if there's an error
       }
     }
+
+    console.log(req)
 
     // Create Thread document
     const thread = new Thread({

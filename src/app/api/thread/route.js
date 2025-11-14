@@ -1,18 +1,16 @@
 import { connectDB } from "@/lib/mongodb";
 import { Thread, ThreadContent } from "@/models/thread.model";
-import { GetPosts, PostThread } from "@/service/thread.service";
+import { User } from "@/models/user.model";
+import { GetPosts, MyPosts, PostThread } from "@/service/thread.service";
 import AuthenticateUser from "@/utility/auth-middleware";
 import formidable from "formidable";
+import { SessionContext } from "next-auth/react";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
     await connectDB();
-    
-    // ✅ Use native FormData API for App Router
     const formData = await req.formData();
-    
-    // Extract fields
     const uploadedBy = formData.get("uploadedBy");
     const plainText = formData.get("plainText");
     const html = formData.get("html");
@@ -20,23 +18,14 @@ export async function POST(req) {
     const visibleTo = formData.get("visibleTo");
     const file = formData.get("file");
 
-    console.log({ uploadedBy, plainText, html, visibility });
-
     let fileContentId = null;
 
-    // Handle file upload if present - Store as Base64 in DB
     if (file && file.size > 0) {
       try {
         const bytes = await file.arrayBuffer();
         const buffer = Buffer.from(bytes);
-        
-        // Convert to Base64
         const base64Data = buffer.toString("base64");
-        
-        console.log("File size:", file.size, "bytes");
-        console.log("File type:", file.type);
 
-        // Create ThreadContent document with Base64 data
         const threadContent = await ThreadContent.create({
           data: base64Data,
           contentType: file.type,
@@ -44,33 +33,29 @@ export async function POST(req) {
         });
 
         fileContentId = threadContent._id;
-        console.log("File stored in DB:", fileContentId);
       } catch (fileError) {
         console.error("Error processing file:", fileError);
-        // Continue without file if there's an error
       }
     }
+    const getUserInfo = await User.findOne({
+      email: uploadedBy
+    }).select("_id")
 
-    // Create Thread document
     const thread = new Thread({
-      uploadedBy,
+      uploadedBy: getUserInfo._id,
       plainText,
       html,
       visibility: visibility || "public",
       visibleTo: visibleTo ? JSON.parse(visibleTo) : null,
-      file: fileContentId, // Link to ThreadContent
+      file: fileContentId, 
     });
 
-    // const savedThread = await thread.save();
+    const savedThread = await thread.save();
     
-    // Populate relationships
     await savedThread.populate("uploadedBy", "name username email");
     if (fileContentId) {
       await savedThread.populate("file");
     }
-    
-    console.log("Thread created successfully:", savedThread._id);
-
     return NextResponse.json(
       { success: true, thread: savedThread },
       { status: 201 }
@@ -87,7 +72,6 @@ export async function POST(req) {
 export async function GET(req) {
   try {
     await connectDB();
-    // const resp = await AuthenticateUser(req)
     const { searchParams } = new URL(req.url);
 
     const page = Number(searchParams.get("page")) || 1;
@@ -101,7 +85,7 @@ export async function GET(req) {
     }
 
     if (uploadedBy) {
-      const posts = await MyPosts({ uploadedBy });
+      const posts = await MyPosts({ uploadedBy, page,limit });
       return NextResponse.json({ success: true, data: posts });
     }
 

@@ -12,7 +12,6 @@ const page = async() => {
   }
   return (
     <div>
-      {/* <VertNav/> */}
       <TopNav/>
     </div>
   )

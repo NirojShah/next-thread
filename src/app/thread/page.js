@@ -106,7 +106,7 @@ export default function CreateThreadPage() {
 
     try {
       const formData = new FormData();
-      formData.append("uploadedBy", session?.user?.id || "user123"); // Replace with actual user ID
+      formData.append("uploadedBy", session?.user?.email || "user123"); // Replace with actual user ID
       formData.append("plainText", content);
       formData.append("html", convertToHTML(content));
       

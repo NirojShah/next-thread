@@ -1,4 +1,5 @@
 import { Thread, ThreadContent } from "@/models/thread.model";
+import { User } from "@/models/user.model";
 import { NextResponse } from "next/server";
 
 export async function PostThread({ uploadedBy, plainText, html }) {
@@ -32,6 +33,7 @@ export async function GetPosts({
       .sort(sort)
       .skip(skip)
       .limit(limit)
+      .populate("file")
       .exec();
     const total = await Thread.countDocuments(filter);
     return {
@@ -46,8 +48,24 @@ export async function GetPosts({
   }
 }
 
-export async function MyPosts({ uploadedBy }) {
-  const posts = await Thread.find({ uploadedBy }).populate("uploadedBy").lean();
+export async function MyPosts({
+  uploadedBy,
+  page,
+  limit,
+  sort = { createdAt: -1 },
+}) {
+  const skip = (page - 1) * limit;
+  const userInfo = await User.findOne({
+    email: uploadedBy,
+  }).select("_id");
+  const posts = await Thread.find({ uploadedBy: userInfo._id })
+    .sort(sort)
+    .skip(skip)
+    .limit(limit)
+    .populate("uploadedBy")
+    .select("-password")
+    .populate("file")
+    .exec();
   return posts;
 }
 

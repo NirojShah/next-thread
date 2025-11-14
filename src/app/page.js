@@ -7,13 +7,11 @@ import VertNav from "./Components/VertNav";
 import TopNav from "./Components/Navs/TopNav";
 const page = async() => {
   const session = await getServerSession(authOptions);
-  console.log(session)
   if(!session){
     redirect("/login")
   }
   return (
     <div>
-      {/* <VertNav/> */}
       <TopNav/>
     </div>
   )

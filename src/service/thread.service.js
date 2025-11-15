@@ -12,7 +12,7 @@ export async function PostThread({ uploadedBy, plainText, html }) {
 
     const fileUpload = await new ThreadContent({});
 
-    throw new Error("testing");
+    // throw new Error("testing");
     // const savedThread = await thread.save();
     const savedThread = 100;
     return savedThread;

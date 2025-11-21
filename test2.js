@@ -8,22 +8,17 @@ export default function ThreadFormPage() {
     description: "",
     author: "",
   });
-
   const [file, setFile] = useState(null);
-
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
+  }
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files.length > 0) {
       setFile(e.target.files[0]);
     }
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const data = new FormData();
     data.append("title", formData.title);
     data.append("description", formData.description);
@@ -37,7 +32,7 @@ export default function ThreadFormPage() {
 
     const result = await res.json();
     console.log(result);
-    alert("Thread submitted!");
+    // alert("Thread submitted!");
   };
 
   return (

@@ -33,6 +33,10 @@ export async function GetPosts({
       .sort(sort)
       .skip(skip)
       .limit(limit)
+      .populate({
+        path:"uploadedBy",
+        select:["-password","-address"]
+      })
       .populate("file")
       .exec();
     const total = await Thread.countDocuments(filter);

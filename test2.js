@@ -55,7 +55,6 @@ export default function ThreadFormPage() {
             required
           />
         </div>
-
         <div className="flex flex-col space-y-1">
           <label className="text-gray-700 font-medium">Description</label>
           <textarea

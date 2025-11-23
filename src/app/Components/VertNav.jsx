@@ -34,7 +34,6 @@ export default function VertNav() {
         z-50 group
       `}
     >
-      {/* Logo/Brand Section */}
       <div className="mb-8 px-2">
         <div className="flex items-center gap-3 overflow-hidden">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center flex-shrink-0 shadow-lg shadow-blue-500/30">
@@ -51,8 +50,6 @@ export default function VertNav() {
           </span>
         </div>
       </div>
-
-      {/* Menu Items */}
       <div className="flex-1 space-y-2">
         {menuItems.map((item, index) => {
           const Icon = item.icon;
@@ -78,20 +75,15 @@ export default function VertNav() {
                   }
                 `}
               >
-                {/* Active Indicator */}
                 {isActive && (
                   <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-white rounded-r-full" />
                 )}
-                
-                {/* Icon */}
                 <div className={`
                   flex-shrink-0 transition-transform duration-300
                   ${isActive ? "scale-110" : "group-hover/item:scale-110"}
                 `}>
                   <Icon size={22} />
                 </div>
-                
-                {/* Label */}
                 <span
                   className={`
                     whitespace-nowrap font-medium transition-all duration-300
@@ -101,14 +93,10 @@ export default function VertNav() {
                 >
                   {item.name}
                 </span>
-
-                {/* Hover Effect Gradient */}
                 {!isActive && (
                   <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-purple-500/0 to-blue-500/0 group-hover/item:from-blue-500/5 group-hover/item:via-purple-500/5 group-hover/item:to-blue-500/5 transition-all duration-300 rounded-xl" />
                 )}
               </Link>
-
-              {/* Tooltip for collapsed state */}
               {!isExpanded && hoveredItem === index && (
                 <div className="absolute left-full ml-6 top-1/2 -translate-y-1/2 px-4 py-2 bg-gray-900 dark:bg-gray-800 text-white text-sm font-medium rounded-lg shadow-xl whitespace-nowrap z-50 animate-in fade-in slide-in-from-left-2 duration-200">
                   {item.name}
@@ -119,8 +107,6 @@ export default function VertNav() {
           );
         })}
       </div>
-
-      {/* Footer - User Profile */}
       <div className="pt-4 border-t border-gray-200/50 dark:border-gray-700/50">
         <div className={`
           flex items-center gap-3 px-3 py-2 rounded-xl

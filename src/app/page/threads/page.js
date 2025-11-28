@@ -123,6 +123,7 @@ const Threads = () => {
         </div>
 
         {/* Threads List */}
+        
         {threads.length === 0 ? (
           <div className="backdrop-blur-xl bg-white/70 dark:bg-slate-800/70 rounded-2xl shadow-2xl border border-white/20 dark:border-slate-700/50 p-12 text-center">
             <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 flex items-center justify-center opacity-50">

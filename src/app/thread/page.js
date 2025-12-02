@@ -236,7 +236,6 @@ export default function CreateThreadPage() {
                       className="w-full h-auto max-h-96 rounded-lg"
                     />
                   )}
-
                   {/* File Preview */}
                   {filePreview.type === "file" && (
                     <div className="flex items-center gap-3 p-4">

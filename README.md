@@ -12,6 +12,7 @@ simplicity, speed, and scalability.
 -   Login with email & password\
 -   JWT-based authentication\
 -   Profile management
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ### 📝 Create & Manage Threads
 

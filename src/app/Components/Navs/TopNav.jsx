@@ -73,9 +73,10 @@ export default function TopNav() {
             ? "backdrop-blur-xl bg-white/80 dark:bg-slate-900/80 shadow-lg shadow-gray-200/20 dark:shadow-black/30"
             : "bg-transparent"
         }
-      `}
+`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div className="w-full px-4 sm:px-6 lg:px-8">
+
         <div className="flex items-center justify-between h-16">
           
           {/* Left Section - Logo & Nav Links */}

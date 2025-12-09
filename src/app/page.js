@@ -15,6 +15,7 @@ const page = async () => {
       <TopNav />
       <div className="mt-[60px] mx-[16px] h-[calc(100vh-60px)]">
         <ResizableLayout />
+        
       </div>
     </div>
   );

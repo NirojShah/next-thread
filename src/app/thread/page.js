@@ -218,7 +218,6 @@ export default function CreateThreadPage() {
                   >
                     <FaTimes size={14} />
                   </button>
-
                   {/* Image Preview */}
                   {filePreview.type === "image" && (
                     <img

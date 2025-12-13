@@ -8,6 +8,9 @@ simplicity, speed, and scalability.
 
 
 
+
+
+
 ### 👤 User Authentication
 
 -   Secure account creation\

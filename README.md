@@ -8,9 +8,9 @@ simplicity, speed, and scalability.
 
 ### 👤 User Authentication
 
--   Secure account creation\
--   Login with email & password\
--   JWT-based authentication\
+-   Secure account creation
+-   Login with email & password
+-   JWT-based authentication
 -   Profile management
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 

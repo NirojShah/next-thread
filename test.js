@@ -14,8 +14,6 @@ Promise.resolve().then(() => {
     Promise.resolve().then(()=>console.log("testing"))
 });
 
-console.log("end");
-
 process.nextTick(()=>{
     console.log("this is the next tick queue.")
 })

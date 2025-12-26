@@ -10,10 +10,13 @@ Promise.resolve().then(() => {
     console.log("THIS PROMISE");
     setTimeout(()=>{
         console.log("TIMER - PROMISE")
+        
     },0)
     Promise.resolve().then(()=>console.log("testing"))
 });
 
+
 process.nextTick(()=>{
     console.log("this is the next tick queue.")
 })
+

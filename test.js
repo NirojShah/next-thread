@@ -20,3 +20,5 @@ process.nextTick(()=>{
     console.log("this is the next tick queue.")
 })
 
+
+printing after some itme.

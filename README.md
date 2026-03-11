@@ -51,19 +51,16 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ## ⚙️ Installation & Setup
 
 ### 1️⃣ Clone the repository
-
     git clone https://github.com/your-username/thread-app.git
     cd thread-app
 
 ### 2️⃣ Install dependencies
 
 **Backend**
-
     cd server
     npm install
 
 **Frontend**
-
     cd client
     npm install
 
@@ -78,12 +75,10 @@ Example `.env` for backend:
 ## ▶️ Run the Application
 
 ### Start Backend
-
     cd server
     npm start
 
 ### Start Frontend
-
     cd client
     npm start
 

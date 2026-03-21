@@ -8,6 +8,7 @@ simplicity, speed, and scalability.
 
 ### 👤 User Authentication
 
+
 -   Secure account creation
 -   Login with email & password
 -   JWT-based authentication
@@ -18,6 +19,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 -   Post **text**, **images**, and **mixed content**\
 -   Edit and delete your threads\
+-   
 -   Real-time updates\
 -   Responsive UI for a smooth user experience
 

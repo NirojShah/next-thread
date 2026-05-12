@@ -1,5 +1,8 @@
 # 🧵 Thread Application
 
+
+
+
 A modern MERN-based platform where users can **create accounts**, **post
 threads**, and upload **photos, text, and other content**. Designed for
 simplicity, speed, and scalability.
